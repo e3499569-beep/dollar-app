@@ -15,10 +15,10 @@ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   background: linear-gradient(135deg,#071b45,#174b91,#392d78);
-  font-family: Tahoma, sans-serif;
+  font-family: Tahoma,sans-serif;
   color: white;
 }
 
@@ -42,23 +42,22 @@ h2 {
   font-size: 32px;
   color: #65f5c0;
   margin: 30px 0;
+  font-weight: bold;
 }
 
 #status {
   font-size: 12px;
   color: #ddd;
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="card">
-  <h2>💵 قیمت دلار آزاد</h2>
+  <h2>💵 قیمت لحظه‌ای دلار آزاد</h2>
   <div id="price">در حال دریافت...</div>
-  <div id="status">در حال اتصال به سرور</div>
-  <p>منبع اطلاعات: TGJU</p>
+  <div id="status">در حال اتصال...</div>
 </div>
 
 <script>
@@ -72,7 +71,7 @@ async function updateDollar() {
       {cache: "no-store"}
     );
 
-    if (!response.ok) throw new Error("Connection failed");
+    if (!response.ok) throw new Error();
 
     const data = await response.json();
     const item = data.current.price_dollar_rl;
@@ -82,7 +81,7 @@ async function updateDollar() {
     );
 
     if (!Number.isFinite(rial) || rial <= 0) {
-      throw new Error("Invalid price");
+      throw new Error();
     }
 
     price.textContent =
@@ -90,12 +89,11 @@ async function updateDollar() {
       + " تومان";
 
     status.textContent =
-      "آخرین بررسی: " +
+      "آخرین بروزرسانی: " +
       new Date().toLocaleTimeString("fa-IR");
 
-  } catch (error) {
-    status.textContent =
-      "اتصال برقرار نشد؛ دریافت قیمت ناموفق بود";
+  } catch {
+    status.textContent = "خطا در دریافت اطلاعات";
   }
 }
 
