@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قیمت لحظه‌ای دلار</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#071b45,#174b91,#392d78);
+  font-family: Tahoma, sans-serif;
+  color: white;
+}
+
+.card {
+  width: 90%;
+  max-width: 400px;
+  padding: 35px 20px;
+  text-align: center;
+  border-radius: 25px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 15px 45px #0005;
+}
+
+h2 {
+  font-size: 21px;
+}
+
+#price {
+  font-size: 32px;
+  color: #65f5c0;
+  margin: 30px 0;
+}
+
+#status {
+  font-size: 12px;
+  color: #ddd;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>💵 قیمت دلار آزاد</h2>
+  <div id="price">در حال دریافت...</div>
+  <div id="status">در حال اتصال به سرور</div>
+  <p>منبع اطلاعات: TGJU</p>
+</div>
+
+<script>
+async function updateDollar() {
+  const price = document.getElementById("price");
+  const status = document.getElementById("status");
+
+  try {
+    const response = await fetch(
+      "https://call3.tgju.org/ajax.json",
+      {cache: "no-store"}
+    );
+
+    if (!response.ok) throw new Error("Connection failed");
+
+    const data = await response.json();
+    const item = data.current.price_dollar_rl;
+
+    const rial = Number(
+      String(item.p).replace(/[^\d.-]/g, "")
+    );
+
+    if (!Number.isFinite(rial) || rial <= 0) {
+      throw new Error("Invalid price");
+    }
+
+    price.textContent =
+      Math.round(rial / 10).toLocaleString("fa-IR")
+      + " تومان";
+
+    status.textContent =
+      "آخرین بررسی: " +
+      new Date().toLocaleTimeString("fa-IR");
+
+  } catch (error) {
+    status.textContent =
+      "اتصال برقرار نشد؛ دریافت قیمت ناموفق بود";
+  }
+}
+
+updateDollar();
+setInterval(updateDollar, 30000);
+</script>
+
+</body>
+</html>
