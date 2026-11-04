@@ -4,66 +4,410 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>قیمت لحظه‌ای دلار</title>
+<meta name="theme-color" content="#080808">
+<title>قیمت لحظه‌ای ارز و طلا</title>
 
 <style>
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg,#071b45,#174b91,#392d78);
-  font-family: Tahoma,sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 5%, #53370e55, transparent 35%),
+    radial-gradient(ellipse at 90% 45%, #18345a44, transparent 40%),
+    #080808;
   color: white;
+  font-family: Tahoma, sans-serif;
+  min-height: 100vh;
+  padding: 18px 12px 35px;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+}
+
+.header {
+  text-align: center;
+  padding: 23px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #d5ad5366;
+  border-radius: 22px;
+  background: linear-gradient(120deg,#161616dd,#292116aa);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 25px #d6a63b22;
+}
+
+.header h1 {
+  font-size: 22px;
+  color: #f6d477;
+}
+
+.header p {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.12),
+    rgba(255,255,255,.025)
+  );
+  border: 1px solid rgba(255,255,255,.24);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow:
+    inset 0 1px 1px #ffffff22,
+    0 12px 30px #0008;
+  border-radius: 23px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg,transparent,#fff9,transparent);
+}
+
+.hero {
+  padding: 23px 17px;
+  margin-bottom: 20px;
+  border-color: #d8b45a88;
+  background: linear-gradient(120deg,#14233b99,#151515dd,#4b351522);
+}
+
+.hero-title {
+  color: #eee;
+  font-size: 17px;
+  margin-bottom: 18px;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hero-icon {
+  font-size: 66px;
+  filter: drop-shadow(0 0 13px #dcae4e);
+}
+
+.hero-price {
+  font-size: clamp(25px,7vw,39px);
+  font-weight: bold;
+  color: #55ffc1;
+  text-shadow: 0 0 20px #16c99555;
+  margin: 12px 0;
+}
+
+.unit {
+  font-size: 14px;
+  color: #ddd;
+}
+
+.status {
+  color: #aaa;
+  font-size: 10px;
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid #ffffff22;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 13px;
 }
 
 .card {
-  width: 90%;
-  max-width: 400px;
-  padding: 35px 20px;
-  text-align: center;
-  border-radius: 25px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.25);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 15px 45px #0005;
+  min-height: 190px;
+  padding: 17px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: .25s;
 }
 
-h2 {
-  font-size: 21px;
+.card:active {
+  transform: scale(.97);
 }
 
-#price {
-  font-size: 32px;
-  color: #65f5c0;
-  margin: 30px 0;
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin-image {
+  width: 65px;
+  height: 65px;
+  min-width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 25%,#ffe9a1,#a66a0b 60%,#362006);
+  border: 2px solid #edc65c;
+  box-shadow: 0 0 18px #daa63855;
+  font-size: 35px;
+}
+
+.card:nth-child(2) .coin-image,
+.card:nth-child(6) .coin-image {
+  background: radial-gradient(circle at 35% 25%,#fff2b0,#a57a27 65%,#30200a);
+}
+
+.card:nth-child(3) .coin-image,
+.card:nth-child(4) .coin-image {
+  background: radial-gradient(circle at 35% 25%,#426fba,#101c37 70%);
+  border-color: #80aaff;
+}
+
+.card:nth-child(7) .coin-image {
+  background: radial-gradient(circle at 35% 25%,#48edff,#0874a8 65%,#03243a);
+  border-color: #28dcff;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
+.name {
+  font-size: 13px;
+  color: #fff;
   font-weight: bold;
+  line-height: 1.8;
 }
 
-#status {
+.price {
+  color: #f4cb59;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 8px;
+  line-height: 1.8;
+}
+
+.price.pending {
+  color: #aaa;
+  font-size: 11px;
+}
+
+.view {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #ffe19a;
+  border: 1px solid #d7b34e;
+  padding: 10px 5px;
+  border-radius: 30px;
   font-size: 12px;
-  color: #ddd;
+  margin-top: 14px;
+  background: #d6a82b12;
+  transition: .2s;
+}
+
+.view:active {
+  background: #c99d3544;
+}
+
+.gram {
+  margin-top: 14px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.gram .coin-image {
+  width: 75px;
+  height: 75px;
+}
+
+.gram .info {
+  flex: 1;
+}
+
+.gram .view {
+  min-width: 105px;
+  margin: 0;
+}
+
+.footer {
+  margin-top: 25px;
+  text-align: center;
+  padding: 15px;
+  border-radius: 30px;
+  border: 1px solid #ffffff22;
+  background: #ffffff09;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.refresh {
+  color: #f1ce71;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+@media(max-width:360px) {
+  .grid { gap: 8px; }
+  .card { padding: 12px 8px; }
+  .coin-image { width: 52px; height: 52px; min-width: 52px; font-size: 27px; }
+  .name { font-size: 11px; }
+  .price { font-size: 11px; }
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<div class="card">
-  <h2>💵 قیمت لحظه‌ای دلار آزاد</h2>
-  <div id="price">در حال دریافت...</div>
-  <div id="status">در حال اتصال...</div>
+<header class="header">
+  <h1>👑 قیمت لحظه‌ای ارز و طلا</h1>
+  <p>داشبورد هوشمند بازارهای مالی</p>
+</header>
+
+<!-- دلار -->
+<section class="glass hero">
+  <div class="hero-title">💵 قیمت دلار آزاد</div>
+
+  <div class="hero-content">
+    <div class="hero-icon">💵</div>
+    <div>
+      <div class="hero-price" id="dollar-price">در حال دریافت...</div>
+      <div class="unit">تومان</div>
+    </div>
+  </div>
+
+  <div class="status" id="dollar-status">
+    در حال بررسی قیمت...
+  </div>
+</section>
+
+<!-- کارت ها -->
+<main class="grid">
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">💍</div>
+      <div class="info">
+        <div class="name">طلا ۱۸ عیار</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://www.tgju.org/profile/geram18" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">🥇</div>
+      <div class="info">
+        <div class="name">طلا ۲۴ عیار</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://exiraz.com/24k-gold-price" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">🇬🇧</div>
+      <div class="info">
+        <div class="name">پوند انگلیس</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://bitpin.ir/academy/live/currency/gbp/" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">🇴🇲</div>
+      <div class="info">
+        <div class="name">ریال عمان</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://bitpin.ir/academy/live/currency/omr/" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">🪙</div>
+      <div class="info">
+        <div class="name">سکه تمام بهار آزادی</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://bitpin.ir/academy/live/coin/" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+  <article class="glass card">
+    <div class="card-top">
+      <div class="coin-image">₿</div>
+      <div class="info">
+        <div class="name">بیت کوین</div>
+        <div class="price pending">مشاهده قیمت آنلاین</div>
+      </div>
+    </div>
+    <a class="view" href="https://arzdigital.com/coins/bitcoin/" target="_blank" rel="noopener">
+      مشاهده قیمت ←
+    </a>
+  </article>
+
+</main>
+
+<!-- گرام -->
+<section class="glass gram">
+  <div class="coin-image">💎</div>
+  <div class="info">
+    <div class="name">گرام</div>
+    <div class="price pending">مشاهده قیمت آنلاین</div>
+  </div>
+  <a class="view" href="https://arzdigital.com/coins/gram/" target="_blank" rel="noopener">
+    مشاهده قیمت ←
+  </a>
+</section>
+
+<footer class="footer">
+  <button class="refresh" onclick="updateDollar()">⟳ بروزرسانی دلار</button>
+  <span id="last-update">در انتظار بروزرسانی</span>
+</footer>
+
 </div>
 
 <script>
 async function updateDollar() {
-  const price = document.getElementById("price");
-  const status = document.getElementById("status");
+  const price = document.getElementById("dollar-price");
+  const status = document.getElementById("dollar-status");
+  const last = document.getElementById("last-update");
 
   try {
     const response = await fetch(
@@ -71,7 +415,7 @@ async function updateDollar() {
       {cache: "no-store"}
     );
 
-    if (!response.ok) throw new Error();
+    if (!response.ok) throw new Error("Network error");
 
     const data = await response.json();
     const item = data.current.price_dollar_rl;
@@ -81,23 +425,33 @@ async function updateDollar() {
     );
 
     if (!Number.isFinite(rial) || rial <= 0) {
-      throw new Error();
+      throw new Error("Invalid price");
     }
 
+    const toman = Math.round(rial / 10);
+
     price.textContent =
-      Math.round(rial / 10).toLocaleString("fa-IR")
-      + " تومان";
+      toman.toLocaleString("fa-IR");
+
+    const time = new Date().toLocaleTimeString("fa-IR");
 
     status.textContent =
-      "آخرین بروزرسانی: " +
-      new Date().toLocaleTimeString("fa-IR");
+      "آخرین بررسی: " + time;
 
-  } catch {
-    status.textContent = "خطا در دریافت اطلاعات";
+    last.textContent =
+      "آخرین بررسی: " + time;
+
+  } catch (error) {
+    status.textContent =
+      "دریافت قیمت ناموفق بود";
+
+    last.textContent =
+      "اتصال به سرور برقرار نشد";
   }
 }
 
 updateDollar();
+
 setInterval(updateDollar, 30000);
 </script>
 
